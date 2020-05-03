@@ -4,7 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start:dev": "nodemon"
+    "start:dev": "nodemon -r"
   },
   "keywords": [],
   "author": "",
@@ -21,6 +21,8 @@
   "devDependencies": {
     "@types/express": "^4.17.6",
     "@types/express-handlebars": "^3.1.0",
+    "@types/node": "^13.13.4",
+    "@types/validator": "^13.0.0",
     "nodemon": "^2.0.3",
     "ts-node": "^8.10.1",
     "typescript": "^3.8.3"

@@ -1,12 +1,12 @@
-const { Router } = require("express");
+import { Router, Request, Response } from "express";
+import Gig from "../models/Gig";
+import Sequelize from "sequelize";
+
 const router = Router();
-const db = require("../config/db");
-const Gig = require("../models/Gig");
-const Sequelize = require("sequelize");
-const Op = Sequelize.Op;
+const { Op } = Sequelize;
 
 //Get gig list
-router.get("/", async (req, res) => {
+router.get("/", async (req: Request, res: Response) => {
   try {
     const gigs = await Gig.findAll();
     res.render("gigs", { gigs });
@@ -16,14 +16,12 @@ router.get("/", async (req, res) => {
 });
 
 // display add gig form
-
-router.get("/add", (req, res) => {
+router.get("/add", (req: Request, res: Response) => {
   res.render("add");
 });
 
 // Add a gig
-
-router.post("/add", async (req, res) => {
+router.post("/add", async (req: Request, res: Response) => {
   let { budget, contact_email, description, technologies, title } = req.body;
   let errors = [];
 
@@ -49,7 +47,6 @@ router.post("/add", async (req, res) => {
   }
 
   // Check for errors
-
   if (errors.length > 0) {
     res.render("add", {
       errors,
@@ -68,7 +65,7 @@ router.post("/add", async (req, res) => {
     technologies = technologies.toLowerCase().replace(/,\s+/g, ",");
     // Insert
     try {
-      const gig = await Gig.create({
+      await Gig.create({
         title,
         technologies,
         budget,
@@ -84,10 +81,10 @@ router.post("/add", async (req, res) => {
 
 // search for gigs
 
-router.get("/search", async (req, res) => {
+router.get("/search", async (req: Request, res: Response) => {
   let { term } = req.query;
 
-  term = term.toLowerCase();
+  term = (term as string).toLowerCase();
 
   try {
     const gigs = await Gig.findAll({
