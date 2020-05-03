@@ -1,41 +1,29 @@
-const express = require("express");
-const handlebars = require("handlebars");
-const hbs = require("express-handlebars");
-const {
-  allowInsecurePrototypeAccess,
-} = require("@handlebars/allow-prototype-access");
-const path = require("path");
-const db = require("./config/db");
-
-const app = express();
-
+"use strict";
+exports.__esModule = true;
+var express_1 = require("express");
+var handlebars_1 = require("handlebars");
+var express_handlebars_1 = require("express-handlebars");
+var allow_prototype_access_1 = require("@handlebars/allow-prototype-access");
+var path_1 = require("path");
+var db_1 = require("./config/db");
+var app = express_1["default"]();
 // Handlebars
-
-app.engine(
-  "handlebars",
-  hbs({
+app.engine("handlebars", express_handlebars_1["default"]({
     defaultLayout: "main",
-    handlebars: allowInsecurePrototypeAccess(handlebars),
-  })
-);
+    handlebars: allow_prototype_access_1.allowInsecurePrototypeAccess(handlebars_1["default"])
+}));
 app.set("view engine", "handlebars");
-
-app.use(express.static(path.join(__dirname, "public")));
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
-const PORT = process.env.PORT || 5000;
-
+app.use(express_1["default"].static(path_1["default"].join(__dirname, "public")));
+app.use(express_1["default"].json());
+app.use(express_1["default"].urlencoded({ extended: true }));
+var PORT = process.env.PORT || 5000;
 // Testing database
-db.authenticate()
-  .then(() => console.log("database connected"))
-  .catch((err) => console.log("error", err));
-
-app.get("/", (req, res) => {
-  res.render("index", { layout: "landing" });
+db_1["default"].authenticate()
+    .then(function () { return console.log("database connected"); })["catch"](function (err) { return console.log("error", err); });
+// Routes
+app.get("/", function (req, res) {
+    res.render("index", { layout: "landing" });
 });
-
-// Gig routes
+// Gig routes middleware
 app.use("/gigs", require("./routes/gigs"));
-
-app.listen(PORT, () => console.log(`Server running on port: ${PORT}`));
+app.listen(PORT, function () { return console.log("Server running on port: " + PORT); });
