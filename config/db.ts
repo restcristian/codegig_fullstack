@@ -1,7 +1,14 @@
 import { Sequelize } from "sequelize";
 
-export default new Sequelize("gigdb", "postgres", "postgres", {
-  host: "localhost",
-  dialect: "postgres",
-  port: 6543, // database exposed port on docker
-});
+const { DB_HOST, DB_USER, DB_NAME, DB_PASSWORD, DB_PORT } = process.env;
+
+export default new Sequelize(
+  DB_NAME as string,
+  DB_USER as string,
+  DB_PASSWORD,
+  {
+    host: DB_HOST,
+    dialect: "postgres",
+    port: +(DB_PORT as string), // database exposed port on docker
+  }
+);
