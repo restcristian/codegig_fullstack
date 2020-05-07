@@ -1,5 +1,6 @@
 import React, { FunctionComponent } from "react";
 import Gigs from "../pages/Gigs";
+import AddGig from "../pages/AddGig";
 
 interface RouteType {
   path: string;
@@ -16,6 +17,11 @@ const routes: RouteType[] = [
   {
     path: "/gigs",
     component: Gigs,
+    exact: true,
+  },
+  {
+    path: "/gigs/add",
+    component: AddGig,
   },
 ];
 
