@@ -1,13 +1,13 @@
-import { AppStateType, GigActionType, FETCH_GIGS } from "../../types";
+import { GigActionType, FETCH_GIGS, GigsStateType } from "../../types";
 
-const init: AppStateType = {
+const init: GigsStateType = {
   gigs: [],
 };
 
 export default (
-  state: AppStateType = init,
+  state: GigsStateType = init,
   action: GigActionType
-): AppStateType => {
+): GigsStateType => {
   switch (action.type) {
     case FETCH_GIGS:
       return {

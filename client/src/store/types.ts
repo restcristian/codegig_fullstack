@@ -1,3 +1,5 @@
+import gigsReducer from "./reducers/Gigs";
+
 export const FETCH_GIGS = "FETCH_GIGS";
 export const ADD_GIG = "ADD_GIG";
 
@@ -10,8 +12,12 @@ export interface GigType {
 export interface CurrentGigStateType {
   gig: GigType;
 }
-export interface AppStateType {
+export interface GigsStateType {
   gigs: GigType[];
+}
+
+export interface AppStateType {
+  gigsReducer: ReturnType<typeof gigsReducer>;
 }
 
 // ActionTypes
