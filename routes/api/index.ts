@@ -75,4 +75,26 @@ router.post("/gigs/add", async (req: Request, res: Response) => {
   }
 });
 
+// Search for gigs
+
+router.post("/gigs/search", async (req: Request, res: Response) => {
+  let { term } = req.body;
+
+  term = (term as string).toLowerCase();
+
+  try {
+    const gigs = await Gig.findAll({
+      where: {
+        technologies: {
+          [Op.like]: "%" + term + "%",
+        },
+      },
+    });
+
+    res.send(gigs);
+  } catch (err) {
+    console.log(err);
+  }
+});
+
 module.exports = router;

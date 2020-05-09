@@ -35,3 +35,16 @@ export const addGig = (
     });
   };
 };
+
+export const searchGig = (
+  term: string
+): ThunkAction<void, AppStateType, unknown, GigActionType> => {
+  return async (dispatch) => {
+    const gigs: GigType[] = (await axios.post("/api/gigs/search", { term }))
+      .data;
+    dispatch({
+      type: FETCH_GIGS,
+      payload: gigs,
+    });
+  };
+};
