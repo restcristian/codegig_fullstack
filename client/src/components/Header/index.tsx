@@ -1,4 +1,5 @@
 import React, { FunctionComponent } from "react";
+import { Link } from "react-router-dom";
 
 const Header: FunctionComponent = () => {
   return (
@@ -11,13 +12,13 @@ const Header: FunctionComponent = () => {
       <nav>
         <ul>
           <li>
-            <a href="/">Home</a>
+            <Link to="/">Home</Link>
           </li>
           <li>
-            <a href="/gigs">All Jobs</a>
+            <Link to="/jobs">All Jobs</Link>
           </li>
           <li>
-            <a href="/gigs/add">Add Job</a>
+            <Link to="/jobs/add">Add Job</Link>
           </li>
         </ul>
       </nav>

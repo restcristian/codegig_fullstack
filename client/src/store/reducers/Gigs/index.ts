@@ -1,4 +1,4 @@
-import { GigActionType, FETCH_GIGS, GigsStateType } from "../../types";
+import { GigActionType, FETCH_GIGS, GigsStateType, ADD_GIG } from "../../types";
 
 const init: GigsStateType = {
   gigs: [],
@@ -13,6 +13,11 @@ export default (
       return {
         ...state,
         gigs: [...action.payload],
+      };
+    case ADD_GIG:
+      return {
+        ...state,
+        gigs: [...state.gigs, action.payload],
       };
     default:
       return state;

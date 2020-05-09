@@ -36,4 +36,8 @@ app.get("/", (req: Request, res: Response) => {
 // Gig routes middleware
 app.use("/gigs", require("./routes/gigs"));
 
+//API route middleware
+
+app.use("/api", require("./routes/api"));
+
 app.listen(PORT, () => console.log(`Server running on port: ${PORT}`));

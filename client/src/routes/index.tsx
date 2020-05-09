@@ -15,12 +15,12 @@ const routes: RouteType[] = [
     exact: true,
   },
   {
-    path: "/gigs",
+    path: "/jobs",
     component: Gigs,
     exact: true,
   },
   {
-    path: "/gigs/add",
+    path: "/jobs/add",
     component: AddGig,
   },
 ];

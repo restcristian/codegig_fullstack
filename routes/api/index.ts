@@ -1,29 +1,23 @@
 import { Router, Request, Response } from "express";
-import Gig from "../models/Gig";
+import Gig from "../../models/Gig";
 import Sequelize from "sequelize";
 
 const router = Router();
 const { Op } = Sequelize;
 
 //Get gig list
-router.get("/", async (req: Request, res: Response) => {
+router.get("/gigs", async (req: Request, res: Response) => {
   try {
     const gigs = await Gig.findAll();
-    // res.send(gigs);
-    res.render("gigs", { gigs });
+    res.send(gigs);
   } catch (err) {
     console.log(err);
   }
 });
 
-// display add gig form
-router.get("/add", (req: Request, res: Response) => {
-  res.render("add");
-});
-
 // Add a gig
-router.post("/add", async (req: Request, res: Response) => {
-  let { budget, contact_email, description, technologies, title } = req.body;
+router.post("/gigs/add", async (req: Request, res: Response) => {
+  let { budget, email, description, technologies, title } = req.body;
   let errors = [];
 
   if (!title) {
@@ -41,7 +35,7 @@ router.post("/add", async (req: Request, res: Response) => {
       text: "please add a description",
     });
   }
-  if (!contact_email) {
+  if (!email) {
     errors.push({
       text: "please add a contact email",
     });
@@ -49,13 +43,8 @@ router.post("/add", async (req: Request, res: Response) => {
 
   // Check for errors
   if (errors.length > 0) {
-    res.render("add", {
+    res.send({
       errors,
-      budget,
-      contact_email,
-      description,
-      technologies,
-      title,
     });
   } else {
     if (!budget) {
@@ -71,36 +60,18 @@ router.post("/add", async (req: Request, res: Response) => {
         technologies,
         budget,
         description,
-        contact_email,
+        email,
       });
-      res.redirect("/gigs");
+      res.send({
+        title,
+        technologies,
+        budget,
+        description,
+        email,
+      });
     } catch (err) {
       console.log(err);
     }
-  }
-});
-
-// search for gigs
-
-router.get("/search", async (req: Request, res: Response) => {
-  let { term } = req.query;
-
-  term = (term as string).toLowerCase();
-
-  try {
-    const gigs = await Gig.findAll({
-      where: {
-        technologies: {
-          [Op.like]: "%" + term + "%",
-        },
-      },
-    });
-
-    res.render("gigs", {
-      gigs,
-    });
-  } catch (err) {
-    console.log(err);
   }
 });
 

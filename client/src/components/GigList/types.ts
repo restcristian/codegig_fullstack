@@ -3,4 +3,5 @@ export interface GigType {
   description: string;
   budget: string;
   technologies: string;
+  email: string;
 }
