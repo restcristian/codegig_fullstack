@@ -1,13 +1,8 @@
 import axios from "axios";
 import { ThunkAction } from "redux-thunk";
-import {
-  FETCH_GIGS,
-  AppStateType,
-  GigActionType,
-  GigsStateType,
-  ADD_GIG,
-} from "./types";
+import { FETCH_GIGS, AppStateType, GigActionType, ADD_GIG } from "./types";
 import { GigType } from "../components/GigList/types";
+import history from "../history";
 
 export const fetchGigs = (): ThunkAction<
   void,
@@ -32,7 +27,9 @@ export const addGig = (
       await axios.post("/api/gigs/add", { ...gig })
     ).data;
 
-    dispatch({
+    history.push("/jobs");
+
+    await dispatch({
       type: ADD_GIG,
       payload: savedGig,
     });

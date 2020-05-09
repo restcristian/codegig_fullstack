@@ -1,4 +1,9 @@
-import React, { FunctionComponent, useState, SyntheticEvent } from "react";
+import React, {
+  FunctionComponent,
+  useState,
+  SyntheticEvent,
+  useEffect,
+} from "react";
 import { useDispatch } from "react-redux";
 import { isEmpty } from "../../helpers";
 import { addGig } from "../../store/actions";
@@ -48,7 +53,9 @@ const AddGig: FunctionComponent = () => {
       setIsValid(true);
     }
     setErrors(currentErrors);
+  };
 
+  useEffect(() => {
     if (isValid) {
       const gig: GigType = {
         title,
@@ -59,7 +66,7 @@ const AddGig: FunctionComponent = () => {
       };
       dispatch(addGig(gig));
     }
-  };
+  }, [isValid]);
 
   return (
     <section id="add" className="container">
