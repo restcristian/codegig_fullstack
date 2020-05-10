@@ -1,9 +1,12 @@
 import React, { FunctionComponent } from "react";
-import { Link } from "react-router-dom";
+import { Link, withRouter, RouteComponentProps } from "react-router-dom";
 
-const Header: FunctionComponent = () => {
+interface Props extends RouteComponentProps {}
+
+const Header: FunctionComponent<Props> = ({ location }) => {
+  const { pathname } = location;
   return (
-    <header className="inner">
+    <header className={pathname === "/" ? "" : "inner"}>
       <h2>
         <a href="/">
           <i className="fas fa-code"></i>CodeJobs
@@ -26,4 +29,4 @@ const Header: FunctionComponent = () => {
   );
 };
 
-export default Header;
+export default withRouter(Header);
