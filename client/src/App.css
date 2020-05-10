@@ -66,6 +66,10 @@ header nav li {
   margin: 0 1rem;
 }
 
+header nav li a.active {
+  color: var(--primary-color);
+}
+
 /* Login Button Spacing */
 /*header nav li:last-child {
   margin-left: -5px;

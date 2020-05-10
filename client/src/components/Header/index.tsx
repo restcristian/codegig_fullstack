@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from "react";
-import { Link, withRouter, RouteComponentProps } from "react-router-dom";
+import { NavLink, withRouter, RouteComponentProps } from "react-router-dom";
 
 interface Props extends RouteComponentProps {}
 
@@ -15,13 +15,19 @@ const Header: FunctionComponent<Props> = ({ location }) => {
       <nav>
         <ul>
           <li>
-            <Link to="/">Home</Link>
+            <NavLink to="/" exact>
+              Home
+            </NavLink>
           </li>
           <li>
-            <Link to="/jobs">All Jobs</Link>
+            <NavLink to="/jobs" exact>
+              All Jobs
+            </NavLink>
           </li>
           <li>
-            <Link to="/jobs/add">Add Job</Link>
+            <NavLink to="/jobs/add" exact>
+              Add Job
+            </NavLink>
           </li>
         </ul>
       </nav>
