@@ -19,6 +19,7 @@ const Gigs = () => {
     } else {
       dispatch(fetchGigs());
     }
+    // eslint-disable-next-line
   }, []);
 
   return (

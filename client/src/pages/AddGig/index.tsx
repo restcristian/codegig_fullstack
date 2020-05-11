@@ -8,6 +8,8 @@ import { useDispatch } from "react-redux";
 import { isEmpty } from "../../helpers";
 import { addGig } from "../../store/actions";
 import { GigType } from "../../components/GigList/types";
+import Form from "../../components/Form";
+import Input from "../../components/Input";
 
 interface ErrorType {
   text: string;
@@ -37,6 +39,11 @@ const AddGig: FunctionComponent = () => {
         text: "please add technologies",
       });
     }
+    if (isEmpty(budget)) {
+      currentErrors.push({
+        text: "please add budget",
+      });
+    }
     if (isEmpty(description)) {
       currentErrors.push({
         text: "please add description",
@@ -47,12 +54,18 @@ const AddGig: FunctionComponent = () => {
         text: "please add email",
       });
     }
-    if (errors.length > 0) {
+
+    if (currentErrors.length > 0) {
       setIsValid(false);
     } else {
       setIsValid(true);
     }
+
     setErrors(currentErrors);
+  };
+
+  const submitGig = (gig: GigType) => {
+    dispatch(addGig(gig));
   };
 
   useEffect(() => {
@@ -64,92 +77,75 @@ const AddGig: FunctionComponent = () => {
         budget,
         email,
       };
-      dispatch(addGig(gig));
+      submitGig(gig);
     }
+    // eslint-disable-next-line
   }, [isValid]);
 
   return (
-    <section id="add" className="container">
+    <section id="add" className="container" data-testid="sectionAdd">
       <div className="form-wrap">
         <h1>Add a Job</h1>
         <p>
           Your contact email will be shared with registered users to apply to
           your job
         </p>
-        {errors.map((error: ErrorType, idx: number) => (
-          <div key={idx} className="error">
-            <p>{error.text}</p>
-          </div>
-        ))}
-        <form action="POST" onSubmit={onSubmit}>
+        <Form
+          errors={errors}
+          onSubmit={onSubmit}
+          testId="form"
+          isValid={isValid}
+        >
+          <Input
+            id="title"
+            maxLength={100}
+            onChange={(val) => setTitle(val.currentTarget.value)}
+            label="Gig Title"
+            placeholder="eg. Small Wordpress website, React developer"
+            testId="input-title"
+            value={title}
+          />
+          <Input
+            id="technologies"
+            maxLength={100}
+            onChange={(val) => setTechnologies(val.currentTarget.value)}
+            label="Technologies Needed"
+            placeholder="eg. javascript, react, PHP"
+            testId="input-technologies"
+            value={technologies}
+          />
+          <Input
+            id="budget"
+            maxLength={100}
+            onChange={(val) => setBudget(val.currentTarget.value)}
+            label="Budget (Leave blank for unknown)"
+            placeholder="eg. 500, 5000, 10000"
+            testId="input-budget"
+            value={budget}
+            type="number"
+          />
           <div className="input-group">
-            <label htmlFor="title">Gig Title</label>
-            <input
-              type="text"
-              name="title"
-              id="title"
-              className="input-box"
-              placeholder="eg. Small Wordpress website, React developer"
+            <Input
+              id="description"
+              label="Gig Description"
+              placeholder="Describe the details of the gig"
+              onChange={(val) => setDescription(val.currentTarget.value)}
               maxLength={100}
-              onChange={(val) => setTitle(val.currentTarget.value)}
-              value={title}
+              value={description}
+              testId="input-description"
+              type="textarea"
             />
-            <div className="input-group">
-              <label htmlFor="technologies">Technologies Needed</label>
-              <input
-                type="text"
-                name="technologies"
-                id="technologies"
-                className="input-box"
-                placeholder="eg. javascript, react, PHP"
-                maxLength={100}
-                onChange={(val) => setTechnologies(val.currentTarget.value)}
-                value={technologies}
-              />
-            </div>
-            <div className="input-group">
-              <label htmlFor="budget">Budget (Leave blank for unknown)</label>
-              <input
-                type="number"
-                name="budget"
-                id="budget"
-                className="input-box"
-                placeholder="eg. 500, 5000, 10000"
-                onChange={(val) => setBudget(val.currentTarget.value)}
-                value={budget}
-              />
-            </div>
-            <div className="input-group">
-              <label htmlFor="description">Gig Description</label>
-              <textarea
-                name="description"
-                id="description"
-                className="input-box"
-                placeholder="Describe the details of the gig"
-                onChange={(val) => setDescription(val.currentTarget.value)}
-                rows={10}
-                value={description}
-              />
-            </div>
-            <div className="input-group">
-              <label htmlFor="email">Contact Email</label>
-              <input
-                type="email"
-                name="contact_email"
-                id="contactemail"
-                className="input-box"
-                placeholder="Enter an email"
-                onChange={(val) => setEmail(val.currentTarget.value)}
-                value={email}
-              />
-            </div>
-            <input
-              type="submit"
-              value="Add Gig"
-              className="btn btn-reverse"
-            ></input>
           </div>
-        </form>
+          <Input
+            id="email"
+            maxLength={100}
+            onChange={(val) => setEmail(val.currentTarget.value)}
+            label="Conctact Email"
+            placeholder="Enter an email"
+            testId="input-email"
+            value={email}
+          />
+        </Form>
       </div>
     </section>
   );
