@@ -22,6 +22,18 @@ This project relies on a backend that connects to a **Postgres Database**. In or
 
 `docker-compose up`
 
+Furthermore, the credentials for the database must be stored in the root folder on an **.env** file and the following info must be filled:
+
+```
+DB_HOST=localhost
+DB_USER=postgres
+DB_NAME=gigdb
+DB_PASSWORD=postgres
+DB_PORT=6543
+```
+
+This credentials are subjected to what you have specified on the **docker-compose.yml** file. For your personal project, make sure to change them to your liking.
+
 Now that you have both your project and system depencies installed, to execute the project run it with:
 
 `npm run start:dev`
