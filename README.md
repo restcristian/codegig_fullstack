@@ -4,6 +4,10 @@ A small full-stack project where you can publish a code gig, search based on the
 
 Originally this project was fully on NodeJS, but in order to practice, instead of rendering the views from the backend, the navigation is handled on the client while the server endpoints were turned into **REST endpoints** so the client can use them.
 
+If you want to see only the server-side version, go to the branch
+
+`feature/server-side`
+
 ## SETUP
 
 Once you have cloned this repo, you must follow this steps:
