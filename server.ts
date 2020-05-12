@@ -1,16 +1,13 @@
-const express = require("express");
-const handlebars = require("handlebars");
-const hbs = require("express-handlebars");
-const {
-  allowInsecurePrototypeAccess,
-} = require("@handlebars/allow-prototype-access");
-const path = require("path");
-const db = require("./config/db");
+import express, { Request, Response } from "express";
+import handlebars from "handlebars";
+import hbs from "express-handlebars";
+import { allowInsecurePrototypeAccess } from "@handlebars/allow-prototype-access";
+import path from "path";
+import db from "./config/db";
 
 const app = express();
 
 // Handlebars
-
 app.engine(
   "handlebars",
   hbs({
@@ -29,13 +26,18 @@ const PORT = process.env.PORT || 5000;
 // Testing database
 db.authenticate()
   .then(() => console.log("database connected"))
-  .catch((err) => console.log("error", err));
+  .catch((err: Error) => console.log("error", err));
 
-app.get("/", (req, res) => {
+// Routes
+app.get("/", (req: Request, res: Response) => {
   res.render("index", { layout: "landing" });
 });
 
-// Gig routes
+// Gig routes middleware
 app.use("/gigs", require("./routes/gigs"));
+
+//API route middleware
+
+app.use("/api", require("./routes/api"));
 
 app.listen(PORT, () => console.log(`Server running on port: ${PORT}`));

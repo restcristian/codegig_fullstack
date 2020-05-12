@@ -1,30 +1,23 @@
-const { Router } = require("express");
+import { Router, Request, Response } from "express";
+import Gig from "../../models/Gig";
+import Sequelize from "sequelize";
+
 const router = Router();
-const db = require("../config/db");
-const Gig = require("../models/Gig");
-const Sequelize = require("sequelize");
-const Op = Sequelize.Op;
+const { Op } = Sequelize;
 
 //Get gig list
-router.get("/", async (req, res) => {
+router.get("/gigs", async (req: Request, res: Response) => {
   try {
     const gigs = await Gig.findAll();
-    res.render("gigs", { gigs });
+    res.send(gigs);
   } catch (err) {
     console.log(err);
   }
 });
 
-// display add gig form
-
-router.get("/add", (req, res) => {
-  res.render("add");
-});
-
 // Add a gig
-
-router.post("/add", async (req, res) => {
-  let { budget, contact_email, description, technologies, title } = req.body;
+router.post("/gigs/add", async (req: Request, res: Response) => {
+  let { budget, email, description, technologies, title } = req.body;
   let errors = [];
 
   if (!title) {
@@ -42,22 +35,16 @@ router.post("/add", async (req, res) => {
       text: "please add a description",
     });
   }
-  if (!contact_email) {
+  if (!email) {
     errors.push({
       text: "please add a contact email",
     });
   }
 
   // Check for errors
-
   if (errors.length > 0) {
-    res.render("add", {
+    res.send({
       errors,
-      budget,
-      contact_email,
-      description,
-      technologies,
-      title,
     });
   } else {
     if (!budget) {
@@ -68,26 +55,32 @@ router.post("/add", async (req, res) => {
     technologies = technologies.toLowerCase().replace(/,\s+/g, ",");
     // Insert
     try {
-      const gig = await Gig.create({
+      await Gig.create({
         title,
         technologies,
         budget,
         description,
-        contact_email,
+        email,
       });
-      res.redirect("/gigs");
+      res.send({
+        title,
+        technologies,
+        budget,
+        description,
+        email,
+      });
     } catch (err) {
       console.log(err);
     }
   }
 });
 
-// search for gigs
+// Search for gigs
 
-router.get("/search", async (req, res) => {
-  let { term } = req.query;
+router.post("/gigs/search", async (req: Request, res: Response) => {
+  let { term } = req.body;
 
-  term = term.toLowerCase();
+  term = (term as string).toLowerCase();
 
   try {
     const gigs = await Gig.findAll({
@@ -98,9 +91,7 @@ router.get("/search", async (req, res) => {
       },
     });
 
-    res.render("gigs", {
-      gigs,
-    });
+    res.send(gigs);
   } catch (err) {
     console.log(err);
   }
