@@ -55,6 +55,6 @@ For now, there are only tests on the client. Thus, you must move to the client d
 - [React JS](https://reactjs.org)
 - [Typescript](https://typescriptlang.org)
 - [Docker](https://docker.com)
-- [PostgresSQl](https://postgresql.org)
+- [PostgresSQL](https://postgresql.org)
 - [Jest](https://jestjs.io)
 - [React Testing Library](https://testing-library.com)
