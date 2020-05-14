@@ -17,16 +17,15 @@ export default (
   switch (action.type) {
     case SIGN_UP_SUCCESS:
       return {
-        ...state,
         status: action.payload,
         isValid: true,
       };
     case SIGN_UP_FAIL:
-    default:
       return {
-        ...state,
         status: action.payload,
-        isValid: false,
+        isValid: true,
       };
+    default:
+      return state;
   }
 };
