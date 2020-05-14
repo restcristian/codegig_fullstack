@@ -29,6 +29,16 @@ const Header: FunctionComponent<Props> = ({ location }) => {
               Add Job
             </NavLink>
           </li>
+          <li>
+            <NavLink to="/login" exact>
+              Login
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="/signup" exact>
+              Signup
+            </NavLink>
+          </li>
         </ul>
       </nav>
     </header>

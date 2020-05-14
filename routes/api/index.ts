@@ -1,9 +1,14 @@
 import { Router, Request, Response } from "express";
+import jwt from "jsonwebtoken";
 import Gig from "../../models/Gig";
+import User from "../../models/User";
 import Sequelize from "sequelize";
+import bycript from "bcrypt";
 
 const router = Router();
 const { Op } = Sequelize;
+
+const { PRIVATE_KEY } = process.env;
 
 //Get gig list
 router.get("/gigs", async (req: Request, res: Response) => {
@@ -94,6 +99,46 @@ router.post("/gigs/search", async (req: Request, res: Response) => {
     res.send(gigs);
   } catch (err) {
     console.log(err);
+  }
+});
+
+// Authentication
+
+router.post("/auth/signup", async (req: Request, res: Response) => {
+  const { username, password } = req.body;
+
+  try {
+    const users = await User.findAll({
+      where: {
+        username: {
+          [Op.eq]: username,
+        },
+      },
+    });
+
+    console.log(users);
+    if (users.length > 0) {
+      res.status(500).send({
+        status: "user already exists",
+      });
+    }
+
+    const salt = await bycript.genSalt();
+    const hashedPassword = await bycript.hash(password, salt);
+
+    const user = await User.create({
+      username,
+      password: hashedPassword,
+    });
+
+    res.send({
+      status: "SUCCESS",
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({
+      status: "FAILED",
+    });
   }
 });
 

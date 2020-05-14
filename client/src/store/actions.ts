@@ -1,6 +1,14 @@
 import axios from "axios";
 import { ThunkAction } from "redux-thunk";
-import { FETCH_GIGS, AppStateType, GigActionType, ADD_GIG } from "./types";
+import {
+  FETCH_GIGS,
+  AppStateType,
+  GigActionType,
+  ADD_GIG,
+  SIGN_UP_SUCCESS,
+  SIGN_UP_FAIL,
+  AccountCreationStatusType,
+} from "./types";
 import { GigType } from "../components/GigList/types";
 import history from "../history";
 
@@ -46,5 +54,32 @@ export const searchGig = (
       type: FETCH_GIGS,
       payload: gigs,
     });
+  };
+};
+
+export const signUp = (
+  username: string,
+  password: string
+): ThunkAction<void, AppStateType, unknown, AccountCreationStatusType> => {
+  return async (dispatch) => {
+    try {
+      const status: string = (
+        await axios.post("/api/auth/signup", { username, password })
+      ).data.status;
+
+      if (status === "SUCCESS") {
+        dispatch({
+          type: SIGN_UP_SUCCESS,
+          payload: status,
+        });
+      } else {
+        dispatch({
+          type: SIGN_UP_FAIL,
+          payload: status,
+        });
+      }
+    } catch (err) {
+      console.log("error", err);
+    }
   };
 };

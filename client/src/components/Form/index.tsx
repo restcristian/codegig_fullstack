@@ -38,16 +38,11 @@ const Form: FunctionComponent<Props> = ({
           submitted
         </span>
       )}
-      <form
-        action="POST"
-        method="POST"
-        onSubmit={onSubmit}
-        data-testid={testId}
-      >
+      <form method="POST" onSubmit={onSubmit} data-testid={testId}>
         {children}
         <input
           type="submit"
-          value="Add Gig"
+          value="Submit"
           className="btn btn-reverse"
           data-testid="btn-submit"
         ></input>
