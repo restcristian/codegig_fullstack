@@ -8,6 +8,9 @@ import {
   SIGN_UP_SUCCESS,
   SIGN_UP_FAIL,
   AccountCreationStatusType,
+  UserActionType,
+  LOGIN_SUCCESS,
+  LOGIN_FAIL,
 } from "./types";
 import { GigType } from "../components/GigList/types";
 import history from "../history";
@@ -76,6 +79,39 @@ export const signUp = (
         dispatch({
           type: SIGN_UP_FAIL,
           payload: status,
+        });
+      }
+    } catch (err) {
+      console.log("error", err);
+    }
+  };
+};
+
+export const logIn = (
+  username: string,
+  password: string
+): ThunkAction<void, AppStateType, unknown, UserActionType> => {
+  return async (dispatch) => {
+    try {
+      const user = await (
+        await axios.post("/api/auth/signin", { username, password })
+      ).data;
+
+      if (user.token) {
+        const { token, username, error } = user;
+        dispatch({
+          type: LOGIN_SUCCESS,
+          payload: {
+            token,
+            username,
+            errorMessage: error,
+          },
+        });
+      } else {
+        const { error } = user;
+        dispatch({
+          type: LOGIN_FAIL,
+          payload: error,
         });
       }
     } catch (err) {

@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import Gig from "../../models/Gig";
 import User from "../../models/User";
 import Sequelize from "sequelize";
-import bycript from "bcrypt";
+import bcrypt from "bcrypt";
 
 const router = Router();
 const { Op } = Sequelize;
@@ -123,8 +123,8 @@ router.post("/auth/signup", async (req: Request, res: Response) => {
       });
     }
 
-    const salt = await bycript.genSalt();
-    const hashedPassword = await bycript.hash(password, salt);
+    const salt = await bcrypt.genSalt();
+    const hashedPassword = await bcrypt.hash(password, salt);
 
     const user = await User.create({
       username,
@@ -139,6 +139,36 @@ router.post("/auth/signup", async (req: Request, res: Response) => {
     res.status(500).send({
       status: "FAILED",
     });
+  }
+});
+
+router.post("/auth/signin", async (req: Request, res: Response) => {
+  const { username, password } = req.body;
+
+  try {
+    const user = await User.findOne({
+      where: {
+        username: {
+          [Op.eq]: username,
+        },
+      },
+    });
+    if (user && bcrypt.compareSync(password, user.password)) {
+      const token = jwt.sign(
+        { username, password: user.password },
+        PRIVATE_KEY as string
+      );
+
+      res.send({ username, token, error: "" });
+    } else {
+      res.send({
+        error: "invalid credentials",
+      });
+    }
+    console.log(user);
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({ error: err });
   }
 });
 

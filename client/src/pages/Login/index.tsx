@@ -1,6 +1,8 @@
 import React, { FunctionComponent, useState, FormEvent } from "react";
+import { useDispatch } from "react-redux";
 import Form from "../../components/Form";
 import Input from "../../components/Input";
+import { logIn } from "../../store/actions";
 
 interface ErrorType {
   text: string;
@@ -11,8 +13,12 @@ const Login: FunctionComponent = () => {
   const [isValid, setIsValid] = useState<boolean>(false);
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const dispatch = useDispatch();
 
-  const onSubmit = (e: FormEvent<HTMLFormElement>) => {};
+  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    dispatch(logIn(username, password));
+  };
   return (
     <div className="container">
       <h2>Login</h2>
