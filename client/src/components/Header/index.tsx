@@ -1,10 +1,31 @@
 import React, { FunctionComponent } from "react";
 import { NavLink, withRouter, RouteComponentProps } from "react-router-dom";
+import routes from "../../routes";
+import { useSelector, shallowEqual } from "react-redux";
+import { AppStateType } from "../../store/types";
+import { isEmpty } from "../../helpers";
 
 interface Props extends RouteComponentProps {}
 
 const Header: FunctionComponent<Props> = ({ location }) => {
   const { pathname } = location;
+
+  const {
+    userReducer: { token },
+  } = useSelector((state: AppStateType) => state, shallowEqual);
+
+  const renderLinks = () => {
+    return routes.map((route) => {
+      return isEmpty(token) && route.requiresAuth ? null : !isEmpty(token) &&
+        route.path === "/login" ? null : (
+        <li>
+          <NavLink to={route.path} exact>
+            {route.label}
+          </NavLink>
+        </li>
+      );
+    });
+  };
   return (
     <header className={pathname === "/" ? "" : "inner"}>
       <h2>
@@ -13,33 +34,7 @@ const Header: FunctionComponent<Props> = ({ location }) => {
         </a>
       </h2>
       <nav>
-        <ul>
-          <li>
-            <NavLink to="/" exact>
-              Home
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/jobs" exact>
-              All Jobs
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/jobs/add" exact>
-              Add Job
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/login" exact>
-              Login
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/signup" exact>
-              Signup
-            </NavLink>
-          </li>
-        </ul>
+        <ul>{renderLinks()}</ul>
       </nav>
     </header>
   );

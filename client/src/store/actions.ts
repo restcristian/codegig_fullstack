@@ -107,6 +107,7 @@ export const logIn = (
             errorMessage: error,
           },
         });
+        history.push("/jobs");
       } else {
         const { error } = user;
         dispatch({
