@@ -21,8 +21,14 @@ export const fetchGigs = (): ThunkAction<
   unknown,
   GigActionType
 > => {
-  return async (dispatch) => {
-    const gigs: GigType[] = (await axios.get("/api/gigs")).data;
+  return async (dispatch, getState) => {
+    const { token } = getState().userReducer;
+    const config = {
+      headers: {
+        Authorization: `Bearer: ${token}`,
+      },
+    };
+    const gigs: GigType[] = (await axios.get("/api/gigs", config)).data;
     dispatch({
       type: FETCH_GIGS,
       payload: gigs,
