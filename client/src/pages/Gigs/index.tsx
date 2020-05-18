@@ -3,10 +3,12 @@ import { useDispatch, useSelector, shallowEqual } from "react-redux";
 import GigList from "../../components/GigList";
 import { AppStateType } from "../../store/types";
 import { fetchGigs, searchGig } from "../../store/actions";
-import { useQuery } from "../../helpers/hooks";
+import { useQuery, useAuth } from "../../helpers/hooks";
 
 const Gigs = () => {
   const query = useQuery();
+  //if user is auth
+  useAuth();
   const {
     gigsReducer: { gigs },
   } = useSelector((state: AppStateType) => state, shallowEqual);
